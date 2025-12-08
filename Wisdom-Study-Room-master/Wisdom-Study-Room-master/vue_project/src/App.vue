@@ -1,4 +1,4 @@
-import router from './router';
+
 <template>
   <div id="app">
     <router-view/>

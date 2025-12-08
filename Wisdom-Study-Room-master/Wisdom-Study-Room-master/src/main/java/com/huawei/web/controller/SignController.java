@@ -22,11 +22,16 @@ import org.springframework.web.bind.annotation.*;
 @Component
 @RequestMapping("/sign")
 public class SignController {
-  @Resource private SignService signService;
-  @Resource private SeatTimeService seatTimeService;
-  @Resource private ReserveService reserveService;
-  @Resource private UserService userService;
-  @Resource private LogService logService;
+  @Resource
+  private SignService signService;
+  @Resource
+  private SeatTimeService seatTimeService;
+  @Resource
+  private ReserveService reserveService;
+  @Resource
+  private UserService userService;
+  @Resource
+  private LogService logService;
 
   /**
    * 签到
@@ -62,16 +67,24 @@ public class SignController {
     Timestamp time = Timestamp.valueOf(LocalDateTime.now().plusMinutes(450));
     List<Reserve> reserveList = signService.selectSignInDelay(time);
     for (Reserve reserve : reserveList) {
+      // 获取用户信息
+      com.huawei.web.entity.User user = userService.selectUserById(reserve.getUserId());
+      if (user != null) {
+        reserve.setReserveUserAccount(user.getUserAccount());
+      }
+
       // 删除座位时间
       seatTimeService.deleteSeat(reserve);
       // 添加违规次数
-      userService.addIllegal(reserve.getReserveUserAccount());
-      // 添加日志
-      Log log = new Log();
-      log.setLogState("签到超时");
-      log.setLogTime(time);
-      log.setUserAccount(reserve.getReserveUserAccount());
-      logService.insertLog(log);
+      if (reserve.getReserveUserAccount() != null) {
+        userService.addIllegal(reserve.getReserveUserAccount());
+        // 添加日志
+        Log log = new Log();
+        log.setLogState("签到超时");
+        log.setLogTime(time);
+        log.setUserAccount(reserve.getReserveUserAccount());
+        logService.insertLog(log);
+      }
       // 更新座位状态
       reserve.setReserveState(Constant.SIGN_IN_TIMEOUT);
       reserveService.updateReserve(reserve);
@@ -85,16 +98,24 @@ public class SignController {
     Timestamp time = Timestamp.valueOf(LocalDateTime.now().plusMinutes(475));
     List<Reserve> reserveList = signService.selectSignOutDelay(time);
     for (Reserve reserve : reserveList) {
+      // 获取用户信息
+      com.huawei.web.entity.User user = userService.selectUserById(reserve.getUserId());
+      if (user != null) {
+        reserve.setReserveUserAccount(user.getUserAccount());
+      }
+
       // 删除座位时间
       seatTimeService.deleteSeat(reserve);
       // 添加违规次数
-      userService.addIllegal(reserve.getReserveUserAccount());
-      // 添加日志
-      Log log = new Log();
-      log.setLogState("签退超时");
-      log.setLogTime(time);
-      log.setUserAccount(reserve.getReserveUserAccount());
-      logService.insertLog(log);
+      if (reserve.getReserveUserAccount() != null) {
+        userService.addIllegal(reserve.getReserveUserAccount());
+        // 添加日志
+        Log log = new Log();
+        log.setLogState("签退超时");
+        log.setLogTime(time);
+        log.setUserAccount(reserve.getReserveUserAccount());
+        logService.insertLog(log);
+      }
       // 更新座位状态
       reserve.setReserveState(Constant.SIGN_OUT_TIMEOUT);
       reserve.setTimeSignOut(time);

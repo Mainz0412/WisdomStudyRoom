@@ -9,6 +9,20 @@ const app = createApp(App)
 app.config.globalProperties.$axios = axios    //全局注册，使用方法为:this.$axios
 axios.defaults.baseURL = '/api';
 
+// request interceptor
+axios.interceptors.request.use(
+  config => {
+    let token = sessionStorage.getItem("token");
+    if (token) {
+      config.headers['token'] = token;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+)
+
 app.use(router)
 app.use(ElementPlus)
 

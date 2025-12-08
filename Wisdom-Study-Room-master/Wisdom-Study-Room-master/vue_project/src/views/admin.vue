@@ -262,7 +262,7 @@
           </el-card>
 
           <!-- 添加违规信息对话框 -->
-          <el-dialog title="添加违规信息" :visible.sync="addViolationDialogVisible" width="600px">
+          <el-dialog title="添加违规信息" v-model="addViolationDialogVisible" width="600px">
             <el-form :model="newViolation" label-width="100px">
               <el-form-item label="账号">
                 <el-input v-model="newViolation.userAccount" style="margin-bottom: 15px"></el-input>
@@ -285,7 +285,7 @@
           </el-dialog>
 
           <!-- 编辑违规信息面板 -->
-          <el-dialog title="编辑违规信息" :visible.sync="editViolationDialogVisible" width="600px">
+          <el-dialog title="编辑违规信息" v-model="editViolationDialogVisible" width="600px">
             <!-- 编辑表单 -->
             <el-form ref="editRoomForm" :model="editViolationForm" label-width="80px">
               <el-form-item label="违规Id" style="margin-bottom: 15px">
@@ -320,7 +320,7 @@
           </el-dialog>
 
           <!-- 删除违规确认对话框 -->
-          <el-dialog title="提示" :visible.sync="deleteViolationDialogVisible" width="30%">
+          <el-dialog title="提示" v-model="deleteViolationDialogVisible" width="30%">
             <span>确认删除该违规信息吗？</span>
             <!-- 操作按钮 -->
             <template #footer>
@@ -334,7 +334,7 @@
           </el-dialog>
 
           <!-- 编辑自习室信息面板 -->
-          <el-dialog title="编辑自习室信息" :visible.sync="editRoomDialogVisible">
+          <el-dialog title="编辑自习室信息" v-model="editRoomDialogVisible">
             <!-- 编辑表单 -->
             <el-form ref="editRoomForm" :model="editRoomForm" label-width="80px">
               <el-form-item label="名称">
@@ -354,7 +354,7 @@
           </el-dialog>
 
           <!-- 删除自习室确认对话框 -->
-          <el-dialog title="提示" :visible.sync="deleteRoomDialogVisible" width="30%">
+          <el-dialog title="提示" v-model="deleteRoomDialogVisible" width="30%">
             <span>确认删除该自习室吗？</span>
             <!-- 操作按钮 -->
             <template #footer>
@@ -368,7 +368,7 @@
           </el-dialog>
 
           <!-- 添加自习室对话框 -->
-          <el-dialog title="添加自习室" :visible.sync="addRoomDialogVisible" width="600px">
+          <el-dialog title="添加自习室" v-model="addRoomDialogVisible" width="600px">
             <el-form :model="newRoom" label-width="100px">
               <el-form-item label="新自习室名称" style="margin-bottom: 15px">
                 <el-input v-model="newRoom.roomName" placeholder="请输入自习室名称"></el-input>
@@ -385,7 +385,7 @@
           </el-dialog>
 
           <!-- 编辑座位信息面板 -->
-          <el-dialog title="编辑座位信息" :visible.sync="editSeatDialogVisible" width="600px">
+          <el-dialog title="编辑座位信息" v-model="editSeatDialogVisible" width="600px">
             <!-- 编辑表单 -->
             <el-form ref="editSeatForm" :model="editSeatForm" label-width="100px">
               <el-form-item label="座位编号"  style="margin-bottom: 15px">
@@ -410,7 +410,7 @@
           </el-dialog>
 
           <!-- 删除座位确认对话框 -->
-          <el-dialog title="提示" :visible.sync="deleteSeatDialogVisible" width="30%">
+          <el-dialog title="提示" v-model="deleteSeatDialogVisible" width="30%">
             <span>确认删除该座位吗？</span>
             <!-- 操作按钮 -->
             <template #footer>
@@ -424,7 +424,7 @@
           </el-dialog>
 
           <!-- 添加座位对话框 -->
-          <el-dialog title="添加座位" :visible.sync="addSeatDialogVisible" width="600px">
+          <el-dialog title="添加座位" v-model="addSeatDialogVisible" width="600px">
             <el-form :model="newSeat" label-width="100px">
               <el-form-item label="座位编号" style="margin-bottom: 15px">
                 <el-input v-model="newSeat.seatNumber" placeholder="请输入座位编号"></el-input>
@@ -446,7 +446,7 @@
           </el-dialog>
 
           <!-- 删除预约信息确认对话框 -->
-          <el-dialog title="提示" :visible.sync="deleteReserveDialogVisible" width="30%">
+          <el-dialog title="提示" v-model="deleteReserveDialogVisible" width="30%">
             <span>确认删除该预约吗？</span>
             <!-- 操作按钮 -->
             <template #footer>
@@ -460,7 +460,7 @@
           </el-dialog>
 
           <!-- 编辑预约信息面板 -->
-          <el-dialog title="编辑预约信息" :visible.sync="editReserveDialogVisible">
+          <el-dialog title="编辑预约信息" v-model="editReserveDialogVisible">
             <!-- 编辑表单 -->
             <el-form ref="editReserveForm" :model="editReserveForm" label-width="80px">
               <el-form-item label="预约账号" style="margin-bottom: 15px" >
@@ -513,7 +513,7 @@
           </el-dialog>
 
           <!-- 添加预约信息对话框 -->
-          <el-dialog title="添加预约" :visible.sync="addReserveDialogVisible" width="600px">
+          <el-dialog title="添加预约" v-model="addReserveDialogVisible" width="600px">
             <el-form :model="newReserve" label-width="80px">
               <el-form-item label="预约账号" style="margin-bottom: 15px">
                 <el-input v-model="newReserve.reserveUserAccount" placeholder="请输入用户账号"></el-input>
@@ -563,7 +563,7 @@
           </el-dialog>
 
           <!-- 编辑用户信息面板 -->
-          <el-dialog title="编辑用户信息" :visible.sync="editUserDialogVisible" width="600px">
+          <el-dialog title="编辑用户信息" v-model="editUserDialogVisible" width="600px">
             <!-- 编辑表单 -->
             <el-form ref="editRoomForm" :model="editUserForm" label-width="100px">
               <el-form-item label="用户名" style="margin-bottom: 15px">
@@ -598,7 +598,7 @@
           </el-dialog>
 
           <!-- 删除用户确认对话框 -->
-          <el-dialog title="提示" :visible.sync="deleteUserDialogVisible" width="30%">
+          <el-dialog title="提示" v-model="deleteUserDialogVisible" width="30%">
             <span>确认删除该用户吗？</span>
             <!-- 操作按钮 -->
             <template #footer>
@@ -612,7 +612,7 @@
           </el-dialog>
 
           <!-- 添加用户对话框 -->
-          <el-dialog title="添加用户" :visible.sync="addUserDialogVisible" width="600px">
+          <el-dialog title="添加用户" v-model="addUserDialogVisible" width="600px">
             <el-form :model="newUser" label-width="80px">
               <el-form-item label="用户名" style="margin-bottom: 15px">
                 <el-input v-model="newUser.userName" placeholder="请输入用户名"></el-input>
@@ -958,7 +958,6 @@ export default {
 
     // 保存编辑后的自习室信息
     saveEditedRoom() {
-      this.editRoomDialogVisible = false;
       axios.put('/room/update', {
         roomId: this.editRoomForm.roomId,
         roomName: this.editRoomForm.roomName
@@ -970,6 +969,7 @@ export default {
             // 删除成功后，重新加载自习室列表
             this.loadRooms();
             this.$message.success('成功修改自习室');
+            this.editRoomDialogVisible = false;
           }
         })
         .catch(error => {
@@ -1068,7 +1068,6 @@ export default {
         this.$message.error('已存在相同的座位号和房间号，请更改');
         return; // 不发送请求
       }
-      this.editSeatDialogVisible = false;
       axios.put(`/seat/update`, this.editSeatForm)
         .then(response => {
           // 保存成功后更新座位列表数据
@@ -1177,7 +1176,6 @@ export default {
     },
     // 保存编辑后的用户信息
     saveEditedUser() {
-      this.editUserDialogVisible = false;
       axios.put('/user/update', {
         userId: this.editUserForm.userId,
         userName: this.editUserForm.userName,
@@ -1191,6 +1189,7 @@ export default {
             // 删除成功后，重新加载自习室列表
             this.loadUsers()
             this.$message.success('成功修改用户');
+            this.editUserDialogVisible = false;
           }
         })
         .catch(error => {
@@ -1359,7 +1358,6 @@ export default {
     },
     // 保存编辑后的预约信息
     saveEditedReserve() {
-      this.editReserveDialogVisible= false;
       const room = this.roomData.find(room => room.roomName === this.editReserveForm.reserveRoomName );
       if(room)
       {
@@ -1377,6 +1375,7 @@ export default {
               // 删除成功后，重新加载自习室列表
               this.loadReserve()
               this.$message.success('成功修改预约信息')
+              this.editReserveDialogVisible = false
             }
             else if (response.data.code === 500)
             {

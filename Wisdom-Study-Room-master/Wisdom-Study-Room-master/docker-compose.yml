@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wisdom-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wisdom_study_room
+      MYSQL_USER: wisdom
+      MYSQL_PASSWORD: wisdom_study_room
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init-database.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - wisdom-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wisdom-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wisdom_study_room?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: wisdom
+      SPRING_DATASOURCE_PASSWORD: wisdom_study_room
+    ports:
+      - "8080:8080"
+    networks:
+      - wisdom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/user/list?userAccount=admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: node:18-alpine
+    container_name: wisdom-frontend
+    depends_on:
+      - backend
+    working_dir: /app
+    volumes:
+      - ./vue_project:/app
+    ports:
+      - "8081:8081"
+    command: sh -c "npm install && npm run serve -- --host 0.0.0.0"
+    environment:
+      - VUE_APP_API_URL=http://backend:8080
+    networks:
+      - wisdom-network
+
+volumes:
+  mysql-data:
+
+networks:
+  wisdom-network:
+    driver: bridge

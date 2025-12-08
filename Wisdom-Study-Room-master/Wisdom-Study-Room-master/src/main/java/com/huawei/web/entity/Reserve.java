@@ -17,8 +17,11 @@ public class Reserve {
   @TableId(type = IdType.AUTO)
   private Integer reserveId;
 
-  @TableField("reserve_user_account")
-  private String reserveUserAccount; // 映射到 reserve.reserve_user_account
+  @TableField("user_id")
+  private Integer userId;
+
+  @TableField(exist = false)
+  private String reserveUserAccount; // 不映射到数据库字段
 
   @TableField("seat_id")
   private Integer reserveSeatNumber; // 映射到 reserve.seat_id

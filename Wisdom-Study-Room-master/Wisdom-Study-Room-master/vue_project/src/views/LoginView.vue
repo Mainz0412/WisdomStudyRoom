@@ -60,34 +60,63 @@ export default {
           axios.get(url).then(response => {
             console.log(response.data)
               const violationData = response.data;
-              const vio = violationData[0]
-              if (vio.userIllegalState === 1) {
-                this.$message.error(`用户违规,直到${vio.userIllegalDate}`)
-              }
-              else{
-                axios.post("user/login",{
-                  userAccount: this.form.useraccount,
-                  userPassword: this.form.password
-                }).then(res =>{
-                  if(res.data.code === 200 && res.data.token.toString() === '1')
-                  {
-                    this.$message.success('登录成功！')
-                    sessionStorage.setItem('userAccount',this.form.useraccount)
-                    this.$router.push('/Admin')
+              if (violationData && violationData.length > 0) {
+                  const vio = violationData[0]
+                  if (vio.userIllegalState === 1) {
+                    this.$message.error(`用户违规,直到${vio.userIllegalDate}`)
                   }
-                  else if(res.data.code === 200 && res.data.token.toString() === '0')
-                  {
-                    this.$message.success('登录成功！')
-                    sessionStorage.setItem('userAccount',this.form.useraccount)
-                    this.$router.push('/HomeView')
+                  else{
+                    axios.post("user/login",{
+                      userAccount: this.form.useraccount,
+                      userPassword: this.form.password
+                    }).then(res =>{
+                      if(res.data.code === 200) {
+                        try {
+                          if (res.data.token) {
+                            sessionStorage.setItem('token', res.data.token);
+                          }
+                          
+                          // Check privilege from the new field
+                          const privilege = res.data.privilege;
+                          
+                          if (privilege === 1) {
+                            this.$message.success('登录成功！')
+                            sessionStorage.setItem('userAccount',this.form.useraccount)
+                            this.$router.push('/Admin')
+                          } else if (privilege === 0) {
+                            this.$message.success('登录成功！')
+                            sessionStorage.setItem('userAccount',this.form.useraccount)
+                            this.$router.push('/HomeView')
+                          } else {
+                            // Fallback or error
+                             this.$message.warning('未知权限')
+                          }
+                        } catch (e) {
+                           console.error("Login processing error", e);
+                           this.$message.error("登录处理异常");
+                        }
+                      }
+                      else if(res.data.code === 500){
+                        this.$message.error('账号或密码错误')
+                      }
+                    })
                   }
-                  else if(res.data.code === 500){
-                    this.$message.error('账号或密码错误')
-                  }
-                })
+              } else {
+                  // 用户不存在，但仍然尝试登录以防同步问题，或者直接提示
+                  // 此处逻辑保持一致：如果这里找不到，说明账号不对? 或者后端没返回。
+                  // 原逻辑是 catch error 提示未查询到。
+                  // 我们尝试继续登录，或者提示错误。
+                  // 如果 user/list 找不到，login 肯定也失败（除非 delay issues）。
+                  // 直接提示账号不存在
+                  this.$message.error("未查询到该账号")
               }
           }).catch(error => {
-            this.$message.error("未查询到该用户")
+            console.error(error);
+            if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                 this.$message.error("登录服务拒绝访问，请联系管理员");
+            } else {
+                 this.$message.error("网络错误或账号不存在");
+            }
             this.form.useraccount = ''
             this.form.password = ''
           });

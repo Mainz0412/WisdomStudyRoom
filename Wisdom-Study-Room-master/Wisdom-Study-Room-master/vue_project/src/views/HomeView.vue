@@ -14,13 +14,10 @@
             <img src="../assets/portrait.png" alt="用户头像">
           </el-avatar>
           <el-popover
-            :ref="popoverRef"
             placement="bottom"
             title="用户信息"
             width="135"
-            :visible-arrow="false"
-            :popper-options="{strategy: 'fixed', modifiers: { flip: { behavior: 'flip' }, preventOverflow: { padding: 10 } } }"
-            :popper-append-to-body="false"
+            :show-arrow="false"
             v-model="showPopover"
             @mouseenter="showPopover = true"
             @mouseleave="showPopover = false"
@@ -31,6 +28,11 @@
               <el-button type="success" @click="modifyUseDialogTab = true" style="font-size: 12px; padding: 8px 15px;">修改昵称</el-button>
               <el-button type="danger" @click="Logout" style="font-size: 12px; padding: 8px 15px;">退出</el-button>
             </div>
+            <template #reference>
+              <el-avatar style="cursor: pointer;">
+                <img src="../assets/portrait.png" alt="用户头像">
+              </el-avatar>
+            </template>
           </el-popover>
         </div>
       </el-header>
@@ -47,7 +49,6 @@
               <i class="el-icon-close"></i>取消</el-button>
             <el-button type="primary" @click="modifyNickname" class="save-btn">
               <i class="el-icon-check"></i>修改</el-button>
-          </div>
           </div>
         </template>
       </el-dialog>
@@ -282,8 +283,6 @@ export default {
     return {
       // 用于控制popover的显示
       showPopover: false,
-      // 用于Popover的引用
-      popoverRef: 'userPopover',
       currentIndex: null,
       ModifyroomId :null,
       ModifyreserveId:null,

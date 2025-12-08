@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * REST controller for user operations.
  *
- * <p>提供用户注册、登录、更新、删除及查询接口。
+ * <p>
+ * 提供用户注册、登录、更新、删除及查询接口。
  *
  * @author Ruijie Zhao
  * @since 1.0
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-  @Resource UserService userService;
+  @Resource
+  UserService userService;
 
   /**
    * 用户注册。
@@ -57,7 +59,8 @@ public class UserController {
       return AjaxResult.error("用户名或密码错误");
     }
     String token = genToken(loginUser);
-    ajax.put(Constant.TOKEN, loginUser.getUserPrivilege());
+    ajax.put(Constant.TOKEN, token);
+    ajax.put("privilege", loginUser.getUserPrivilege());
     return ajax;
   }
 

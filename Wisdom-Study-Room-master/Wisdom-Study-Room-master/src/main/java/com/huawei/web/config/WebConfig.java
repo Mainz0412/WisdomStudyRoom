@@ -18,6 +18,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login", "/user/register", "/error"); // 排除登录注册接口
+                .excludePathPatterns("/user/login", "/user/register", "/error", "/user/list"); // 排除登录注册接口及用户状态查询
     }
 }

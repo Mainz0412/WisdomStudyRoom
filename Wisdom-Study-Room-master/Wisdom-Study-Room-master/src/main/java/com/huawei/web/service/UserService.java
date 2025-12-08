@@ -147,6 +147,16 @@ public class UserService {
   }
 
   /**
+   * 根据ID查找用户
+   *
+   * @param userId 用户ID
+   * @return 用户
+   */
+  public User selectUserById(Integer userId) {
+    return userMapper.selectById(userId);
+  }
+
+  /**
    * 违规状态添加
    *
    * @param userAccount 用户账号
