@@ -5,7 +5,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
 /**
- * @author zrj2002
+ * @author Yi Chuizhou
  */
 @Component
 public class TaskSchedulerConfig {

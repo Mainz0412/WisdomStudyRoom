@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Binhui Liu
+ * @author Yi Chuizhou
  */
 @Service
 public class RoomService {

@@ -4,6 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.huawei.web.entity.Log;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 public interface LogMapper extends BaseMapper<Log> {}

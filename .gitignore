@@ -30,3 +30,6 @@ package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore exploded/packaged application output
+/demo-0.0.1-SNAPSHOT/

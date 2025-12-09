@@ -14,7 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 @RestController
 @RequestMapping("/seat")

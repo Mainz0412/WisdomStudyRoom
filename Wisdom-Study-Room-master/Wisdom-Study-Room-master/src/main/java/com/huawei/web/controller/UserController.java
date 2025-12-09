@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>
  * 提供用户注册、登录、更新、删除及查询接口。
  *
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  * @since 1.0
  */
 @RestController

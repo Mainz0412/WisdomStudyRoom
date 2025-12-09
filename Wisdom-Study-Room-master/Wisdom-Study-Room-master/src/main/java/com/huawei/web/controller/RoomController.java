@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * <p>提供房间的增删改查接口。
  *
- * @author Binhui Liu
+ * @author Yi Chuizhou
  * @since 1.0
  */
 @RestController

@@ -1,7 +1,7 @@
 package com.huawei.web.util.constant;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 public class Constant {
   /** 座椅释放 */

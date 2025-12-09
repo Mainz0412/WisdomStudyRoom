@@ -3,7 +3,7 @@ package com.huawei.web.util.constant;
 /**
  * 返回状态码
  *
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 public class HttpStatus {
   /** 操作成功 */

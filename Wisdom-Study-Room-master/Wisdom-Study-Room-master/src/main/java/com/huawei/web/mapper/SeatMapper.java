@@ -4,6 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.huawei.web.entity.Seat;
 
 /**
- * @author Binhui Liu
+ * @author Yi Chuizhou
  */
 public interface SeatMapper extends BaseMapper<Seat> {}

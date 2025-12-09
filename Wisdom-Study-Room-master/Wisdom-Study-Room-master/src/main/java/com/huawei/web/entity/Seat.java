@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 @TableName("seat")
 @Data

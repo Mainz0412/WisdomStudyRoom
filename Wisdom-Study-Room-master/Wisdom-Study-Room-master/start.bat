@@ -1,6 +1,6 @@
 @echo off
 REM 智慧自习室 - Windows 一键启动脚本
-REM 同时启动后端和前端
+REM 说明: 使用 CMD 兼容的检测和更稳健的 `start` 调用，加入 `where` 检查
 
 setlocal enabledelayedexpansion
 
@@ -12,55 +12,79 @@ set "FRONTEND_DIR=%PROJECT_ROOT%\vue_project"
 echo.
 echo ==========================================
 echo     智慧自习室 - 启动脚本
-echo ==========================================
+echo =========================================
 echo.
 
 REM 检查 Java
 echo [检查] Java 环境...
-java -version >nul 2>&1
-if errorlevel 1 (
-    echo [错误] Java 未安装
+where java >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [错误] Java 未找到，请将 Java 添加到 PATH
     pause
     exit /b 1
 )
-for /f "tokens=*" %%i in ('java -version 2^>^&1 ^| findstr /R "version"') do set JAVA_VERSION=%%i
+for /f "delims=" %%i in ('java -version 2^>^&1 ^| findstr /R "version"') do set "JAVA_VERSION=%%i"
 echo [成功] Java 已安装: %JAVA_VERSION%
 echo.
 
 REM 检查 npm
 echo [检查] npm 环境...
-npm -v >nul 2>&1
-if errorlevel 1 (
-    echo [错误] npm 未安装
+where npm >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [错误] npm 未找到，请安装 Node.js 并确保 npm 在 PATH 中
     pause
     exit /b 1
 )
-for /f "tokens=*" %%i in ('npm -v') do set NPM_VERSION=%%i
+for /f "delims=" %%i in ('npm -v 2^>^&1') do set "NPM_VERSION=%%i"
 echo [成功] npm 已安装: %NPM_VERSION%
 echo.
 
-REM 检查 MySQL
-echo [检查] MySQL 连接...
-mysql -u wisdom -pwisdom_study_room -e "SELECT 1;" >nul 2>&1
-if errorlevel 1 (
-    echo [错误] 无法连接 MySQL，请确保 MySQL 服务正在运行
-    pause
-    exit /b 1
+REM 检查 mvn 和 mysql 可用性（可选提示）
+where mvn >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [提示] Maven 未检测到，构建 JAR 时可能失败
 )
-echo [成功] MySQL 连接成功
+where mysql >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [提示] MySQL 客户端未检测到，无法验证数据库连接
+)
 echo.
+
+REM 检查 MySQL 连接（如果 mysql 可用则尝试连接）
+where mysql >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo [检查] MySQL 连接...
+    mysql -u wisdom -pwisdom_study_room -e "SELECT 1;" >nul 2>&1
+    if %ERRORLEVEL% neq 0 (
+        echo [警告] 无法使用提供的凭据连接 MySQL，请确认服务和凭据
+    ) else (
+        echo [成功] MySQL 连接成功
+    )
+    echo.
+)
 
 REM 启动后端
 echo [启动] 后端服务...
 cd /d "%BACKEND_DIR%"
 
 if not exist "target\demo-0.0.1-SNAPSHOT.jar" (
-    echo [警告] JAR 文件不存在，正在构建...
-    call mvn clean package -DskipTests -q
+    echo [警告] JAR 文件不存在，尝试构建（如果未安装 Maven 会跳过）...
+    where mvn >nul 2>&1
+    if %ERRORLEVEL% equ 0 (
+        call mvn clean package -DskipTests -q
+    ) else (
+        echo [错误] Maven 未找到，无法构建 JAR，请先运行 `mvn package` 或安装 Maven
+        echo.
+    )
 )
 
-start "Wisdom-Backend" java -jar target\demo-0.0.1-SNAPSHOT.jar
-echo [成功] 后端服务已启动
+if exist "target\demo-0.0.1-SNAPSHOT.jar" (
+    start "Wisdom-Backend" cmd /c "java -jar ""%~dp0target\demo-0.0.1-SNAPSHOT.jar"""
+    echo [成功] 后端服务已启动
+) else (
+    echo [错误] 未找到 JAR，后端未启动
+    echo.
+)
 echo.
 
 REM 等待后端启动
@@ -88,7 +112,7 @@ if not exist "node_modules" (
     call npm install -q
 )
 
-start "Wisdom-Frontend" npm run serve
+start "Wisdom-Frontend" cmd /c "npm run serve"
 echo [成功] 前端服务已启动
 echo.
 
@@ -109,7 +133,7 @@ echo [成功] 前端服务已就绪 (http://localhost:8081)
 echo.
 
 echo ==========================================
-echo 所有服务已启动！
+echo 所有服务已启动（或已尝试启动）。
 echo ==========================================
 echo.
 echo 访问地址:

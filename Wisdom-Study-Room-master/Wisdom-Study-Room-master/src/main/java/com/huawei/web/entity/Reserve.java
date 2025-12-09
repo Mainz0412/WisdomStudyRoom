@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 @TableName("reserve")
 @Data

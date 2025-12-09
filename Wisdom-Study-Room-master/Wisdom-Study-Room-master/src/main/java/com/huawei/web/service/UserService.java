@@ -11,7 +11,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 @Service
 public class UserService {

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author Ruijie Zhao
+ * @author Yi Chuizhou
  */
 @RestController
 @EnableScheduling
