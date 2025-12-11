@@ -92,10 +92,12 @@
               </el-table-column>
               <el-table-column label="操作" width="200" style="display: flex;">
                 <template v-slot="scope">
-                  <el-button type="primary" plain @click="editReserve(scope.row)" class="edit-btn">
-                    <el-icon><Edit /></el-icon>编辑</el-button>
-                  <el-button type="danger" plain @click="deleteReserve(scope)" class="delete-btn">
-                    <el-icon><Delete /></el-icon>删除</el-button>
+                  <div class="action-buttons">
+                    <el-button type="primary" plain @click="editReserve(scope.row)" class="edit-btn">
+                      <el-icon><Edit /></el-icon>编辑</el-button>
+                    <el-button type="danger" plain @click="deleteReserve(scope)" class="delete-btn">
+                      <el-icon><Delete /></el-icon>删除</el-button>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -124,10 +126,12 @@
               </el-table-column>
               <el-table-column label="操作" width="200" style="display: flex;">
                 <template v-slot="scope">
-                  <el-button type="primary" plain @click="editRoom(scope.row)" class="edit-btn">
-                    <el-icon><Edit /></el-icon>编辑</el-button>
-                  <el-button type="danger" plain @click="deleteRoom(scope)" class="delete-btn">
-                    <el-icon><Delete /></el-icon>删除</el-button>
+                  <div class="action-buttons">
+                    <el-button type="primary" plain @click="editRoom(scope.row)" class="edit-btn">
+                      <el-icon><Edit /></el-icon>编辑</el-button>
+                    <el-button type="danger" plain @click="deleteRoom(scope)" class="delete-btn">
+                      <el-icon><Delete /></el-icon>删除</el-button>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -156,12 +160,14 @@
               <el-table-column prop="roomName" label="所在自习室" sortable></el-table-column>
               <el-table-column label="操作" width="200" style="display: flex;">
                 <template v-slot="scope">
-                  <el-button type="primary" plain @click="editSeat(scope.row)" class="edit-btn">
-                    <el-icon><Edit /></el-icon>编辑
-                  </el-button>
-                  <el-button type="danger" plain @click="deleteSeat(scope)" class="delete-btn">
-                    <el-icon><Delete /></el-icon>删除
-                  </el-button>
+                  <div class="action-buttons">
+                    <el-button type="primary" plain @click="editSeat(scope.row)" class="edit-btn">
+                      <el-icon><Edit /></el-icon>编辑
+                    </el-button>
+                    <el-button type="danger" plain @click="deleteSeat(scope)" class="delete-btn">
+                      <el-icon><Delete /></el-icon>删除
+                    </el-button>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -209,10 +215,12 @@
               </el-table-column>
               <el-table-column label="操作" width="200" style="display: flex;">
                 <template v-slot="scope">
-                  <el-button type="primary" plain @click="editUser(scope.row)" class="edit-btn">
-                    <el-icon><Edit /></el-icon>编辑</el-button>
-                  <el-button type="danger" plain @click="deleteUser(scope)" class="delete-btn">
-                    <el-icon><Delete /></el-icon>删除</el-button>
+                  <div class="action-buttons">
+                    <el-button type="primary" plain @click="editUser(scope.row)" class="edit-btn">
+                      <el-icon><Edit /></el-icon>编辑</el-button>
+                    <el-button type="danger" plain @click="deleteUser(scope)" class="delete-btn">
+                      <el-icon><Delete /></el-icon>删除</el-button>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -245,14 +253,16 @@
               </el-table-column>
               <el-table-column label="操作" width="200" style="display: flex;">
                 <template v-slot="scope">
-                  <!-- 编辑违规信息按钮 -->
-                  <el-button type="primary" plain @click="editViolation(scope.row)" class="edit-btn">
-                    <el-icon><Edit /></el-icon>编辑
-                  </el-button>
-                  <!-- 删除违规信息按钮 -->
-                  <el-button type="danger" plain @click="deleteViolation(scope)" class="delete-btn">
-                    <el-icon><Delete /></el-icon>删除
-                  </el-button>
+                  <div class="action-buttons">
+                    <!-- 编辑违规信息按钮 -->
+                    <el-button type="primary" plain @click="editViolation(scope.row)" class="edit-btn">
+                      <el-icon><Edit /></el-icon>编辑
+                    </el-button>
+                    <!-- 删除违规信息按钮 -->
+                    <el-button type="danger" plain @click="deleteViolation(scope)" class="delete-btn">
+                      <el-icon><Delete /></el-icon>删除
+                    </el-button>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -1639,22 +1649,33 @@ export default {
   padding: 10px 20px; /* 内边距 */
   cursor: pointer; /* 鼠标样式 */
   transition: background-color 0.3s ease; /* 过渡效果 */
+}
 
-  /* 鼠标悬停样式 */
+.add-btn:hover {
+  background-color: #66B1FF;
+}
 
-  &:hover {
-    background-color: #66B1FF;
-  }
-
-  /* 按下样式 */
-
-  &:active {
-    background-color: #1F90FF;
-  }
+.add-btn:active {
+  background-color: #1F90FF;
 }
 
 .cell {
   display: flex;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons .edit-btn, .action-buttons .delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
 }
 
 /* 按钮图标样式 */

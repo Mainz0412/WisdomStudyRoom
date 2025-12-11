@@ -3,37 +3,33 @@
     <el-container>
 
       <el-header>
-        <h1 style="margin-left: 630px">智慧自习室</h1>
-        <div style="margin-left: 615px">
-          <!-- 触发元素改为头像 -->
-          <el-avatar
-            style="cursor: pointer;"
-            @mouseenter="showPopover = true"
-            @mouseleave="showPopover = false"
-          >
-            <img src="../assets/portrait.png" alt="用户头像">
-          </el-avatar>
-          <el-popover
-            placement="bottom"
-            title="用户信息"
-            width="135"
-            :show-arrow="false"
-            v-model="showPopover"
-            @mouseenter="showPopover = true"
-            @mouseleave="showPopover = false"
-          >
-            <div>
-              <h4>昵称: {{userData.userName}}</h4>
-              <h4>账号: {{userData.userAccount}}</h4>
-              <el-button type="success" @click="modifyUseDialogTab = true" style="font-size: 12px; padding: 8px 15px;">修改昵称</el-button>
-              <el-button type="danger" @click="Logout" style="font-size: 12px; padding: 8px 15px;">退出</el-button>
-            </div>
-            <template #reference>
-              <el-avatar style="cursor: pointer;">
-                <img src="../assets/portrait.png" alt="用户头像">
-              </el-avatar>
-            </template>
-          </el-popover>
+        <div class="header-content">
+          <h1>智慧自习室</h1>
+          <div class="user-area">
+            <el-popover
+              placement="bottom"
+              title="用户信息"
+              width="180"
+              :show-arrow="false"
+              v-model="showPopover"
+              @mouseenter="showPopover = true"
+              @mouseleave="showPopover = false"
+            >
+              <div>
+                <h4 style="margin:4px 0">昵称: {{userData.userName}}</h4>
+                <h4 style="margin:4px 0">账号: {{userData.userAccount}}</h4>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <el-button type="success" @click="modifyUseDialogTab = true" size="mini">修改昵称</el-button>
+                  <el-button type="danger" @click="Logout" size="mini">退出</el-button>
+                </div>
+              </div>
+              <template #reference>
+                <el-avatar class="header-avatar" style="cursor: pointer;">
+                  <img src="../assets/portrait.png" alt="用户头像">
+                </el-avatar>
+              </template>
+            </el-popover>
+          </div>
         </div>
       </el-header>
 
@@ -1005,6 +1001,29 @@ header {
   justify-content: center;
   background: #3e5ebd;
   color: white;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 24px;
+  color: white;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+}
+
+.header-avatar img {
+  width: 36px;
+  height: 36px;
 }
 
 footer {

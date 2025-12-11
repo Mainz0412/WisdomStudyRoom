@@ -135,20 +135,20 @@ export default {
 
 <style scoped>
 /* 全局样式中设置背景图片 */
-#building {
-  background: url("../assets/backgroud.jpg");
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background-size: 100% 100%;
+.login-container {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
-.login-container {
-    max-width: 350px;
-    margin: 100px auto;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+#building {
+  background: url("../assets/backgroud.jpg") center center / cover no-repeat;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
 .login-form {

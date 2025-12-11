@@ -113,11 +113,12 @@ export default {
 
 <style scoped>
 .change-container {
-  max-width: 350px;
-  margin: 100px auto;
-  padding: 20px;
-  border-radius: 5px;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 24px;
+  border-radius: 8px;
   background-color: #f9f9f9;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
 .logo {
@@ -128,18 +129,18 @@ export default {
   /* 调整徽标位置 */
 }
 
-#building {
-  background: url("../assets/backgroud.jpg");
+ #building {
+  background: url("../assets/backgroud.jpg") center center / cover no-repeat;
   width: 100%;
-  height: 100%;
-  position: fixed;
-  background-size: 100% 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
 .head {
   display: flex;
   align-items: center;
-  margin-left: 126px
+  justify-content: center;
+  margin: 0 0 16px 0;
 }
 
 .register-form {
