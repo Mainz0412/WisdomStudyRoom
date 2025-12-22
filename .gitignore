@@ -1,0 +1,35 @@
+### Java / Maven
+/target/
+**/target/
+!/target/demo-0.0.1-SNAPSHOT.jar
+!**/target/demo-0.0.1-SNAPSHOT.jar
+*.class
+*.jar.original
+
+# Maven specific
+/.mvn/
+/.settings/
+dependency-reduced-pom.xml
+
+### Node / Vue
+/vue_project/node_modules/
+/vue_project/dist/
+vue_project/node_modules/
+vue_project/dist/
+package-lock.json
+
+### macOS
+.DS_Store
+
+### IDE
+.idea/
+*.iml
+.vscode/
+
+### Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore exploded/packaged application output
+/demo-0.0.1-SNAPSHOT/

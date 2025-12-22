@@ -1,0 +1,30 @@
+{
+  "eslint-plugin-promise": {
+    "current": "5.2.0",
+    "wanted": "5.2.0",
+    "latest": "7.2.1",
+    "dependent": "vue_project",
+    "location": "C:\\Users\\czy-0\\Desktop\\SoftwareEngineering\\Wisdom-Study-Room-master\\Wisdom-Study-Room-master\\vue_project\\node_modules\\eslint-plugin-promise"
+  },
+  "vue": {
+    "current": "2.7.16",
+    "wanted": "2.7.16",
+    "latest": "3.5.24",
+    "dependent": "vue_project",
+    "location": "C:\\Users\\czy-0\\Desktop\\SoftwareEngineering\\Wisdom-Study-Room-master\\Wisdom-Study-Room-master\\vue_project\\node_modules\\vue"
+  },
+  "vue-router": {
+    "current": "3.6.5",
+    "wanted": "3.6.5",
+    "latest": "4.6.3",
+    "dependent": "vue_project",
+    "location": "C:\\Users\\czy-0\\Desktop\\SoftwareEngineering\\Wisdom-Study-Room-master\\Wisdom-Study-Room-master\\vue_project\\node_modules\\vue-router"
+  },
+  "vuex": {
+    "current": "3.6.2",
+    "wanted": "3.6.2",
+    "latest": "4.1.0",
+    "dependent": "vue_project",
+    "location": "C:\\Users\\czy-0\\Desktop\\SoftwareEngineering\\Wisdom-Study-Room-master\\Wisdom-Study-Room-master\\vue_project\\node_modules\\vuex"
+  }
+}
