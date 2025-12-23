@@ -110,9 +110,8 @@ public class UserService {
     }
 
     // 构造更新条件
-    com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper<User> updateWrapper =
-        new com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper<>();
-    updateWrapper.eq("user_id", user.getUserId());
+    com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper<User> updateWrapper =
+        Wrappers.<User>lambdaUpdate().eq(User::getUserId, user.getUserId());
 
     // 按需设置需要更新的字段（仅对非空字段做更新，避免无意覆盖），
     // 但封禁相关字段在解封场景下需要强制更新为 0/NULL。
