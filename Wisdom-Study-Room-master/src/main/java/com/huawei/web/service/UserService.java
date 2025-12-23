@@ -1,14 +1,17 @@
 package com.huawei.web.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.huawei.web.entity.User;
 import com.huawei.web.mapper.UserMapper;
 import com.huawei.web.util.constant.Constant;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
+
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Yi Chuizhou
@@ -105,7 +108,54 @@ public class UserService {
         user.setUserPassword(cn.hutool.crypto.digest.BCrypt.hashpw(user.getUserPassword()));
       }
     }
-    userMapper.update(user, Wrappers.<User>lambdaQuery().eq(User::getUserId, user.getUserId()));
+
+    // 构造更新条件
+    com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper<User> updateWrapper =
+        new com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper<>();
+    updateWrapper.eq("user_id", user.getUserId());
+
+    // 按需设置需要更新的字段（仅对非空字段做更新，避免无意覆盖），
+    // 但封禁相关字段在解封场景下需要强制更新为 0/NULL。
+
+    if (user.getUserName() != null) {
+      updateWrapper.set(User::getUserName, user.getUserName());
+    }
+
+    if (user.getUserPassword() != null && !user.getUserPassword().isEmpty()) {
+      updateWrapper.set(User::getUserPassword, user.getUserPassword());
+    }
+
+    if (user.getUserPrivilege() != null) {
+      updateWrapper.set(User::getUserPrivilege, user.getUserPrivilege());
+    }
+
+    // 是否封禁字段：如果前端传了，就按传入值更新
+    boolean explicitlyUnban =
+        user.getUserIllegalState() != null && Constant.UNBAN.equals(user.getUserIllegalState());
+    if (user.getUserIllegalState() != null) {
+      updateWrapper.set(User::getUserIllegalState, user.getUserIllegalState());
+    }
+
+    // 解封场景：同时重置违规次数并清空封禁时间，这里需要“强制写入”0 和 NULL
+    if (explicitlyUnban) {
+      Integer count = user.getUserIllegal();
+      if (count == null || count >= Constant.ILLEGAL_LIMIT) {
+        count = 0;
+      }
+      updateWrapper.set(User::getUserIllegal, count);
+      // 这里即便是 null 也要 set，确保数据库字段被更新为 NULL
+      updateWrapper.set(User::getUserIllegalDate, null);
+    } else {
+      // 非解封场景，只在前端显式传值时更新对应字段
+      if (user.getUserIllegal() != null) {
+        updateWrapper.set(User::getUserIllegal, user.getUserIllegal());
+      }
+      if (user.getUserIllegalDate() != null) {
+        updateWrapper.set(User::getUserIllegalDate, user.getUserIllegalDate());
+      }
+    }
+
+    userMapper.update(null, updateWrapper);
   }
 
   /**

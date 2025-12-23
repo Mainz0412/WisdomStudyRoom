@@ -628,6 +628,17 @@
               <el-form-item label="权限" style="margin-bottom: 15px">
                 <el-input v-model="editUserForm.userPrivilege"></el-input>
               </el-form-item>
+              <el-form-item label="是否封禁" style="margin-bottom: 15px">
+                <el-select
+                  v-model="editUserForm.userIllegalState"
+                  placeholder="请选择封禁状态"
+                  style="width: 100%"
+                  @change="onIllegalStateChange"
+                >
+                  <el-option label="未封禁" :value="0" />
+                  <el-option label="封禁" :value="1" />
+                </el-select>
+              </el-form-item>
               <el-form-item label="封禁截至时间" style="margin-bottom: 15px">
                 <el-date-picker
                   v-model="editUserForm.userIllegalDate"
@@ -727,6 +738,7 @@ export default {
         userPassword: '',
         userName: '',
         userPrivilege:'',
+        userIllegalState: 0,
         userIllegalDate:'',
         showPassword: false
       }, // 编辑用户表单数据
@@ -1247,13 +1259,17 @@ export default {
     },
     // 保存编辑后的用户信息
     saveEditedUser() {
-      axios.put('/user/update', {
+      // 如果切换为未封禁，则清空封禁截至时间
+      const payload = {
         userId: this.editUserForm.userId,
         userName: this.editUserForm.userName,
         userPassword: this.editUserForm.userPassword,
         userPrivilege: this.editUserForm.userPrivilege,
-        userIllegalDate: this.editUserForm.userIllegalDate
-      })
+        userIllegalState: this.editUserForm.userIllegalState,
+        userIllegalDate: this.editUserForm.userIllegalState === 0 ? null : this.editUserForm.userIllegalDate
+      };
+
+      axios.put('/user/update', payload)
         .then(response => {
           // 添加成功后，关闭对话框，并刷新自习室列表
           if (response.data && response.data.code === 200) {
@@ -1267,6 +1283,13 @@ export default {
           console.error('修改用户失败:', error);
           this.$message.error('修改用户失败，请稍后重试');
         });
+    },
+
+    // 当封禁状态变为“未封禁”时，自动清除封禁截至时间
+    onIllegalStateChange(val) {
+      if (val === 0) {
+        this.editUserForm.userIllegalDate = null;
+      }
     },
 
     // 确认删除用户
