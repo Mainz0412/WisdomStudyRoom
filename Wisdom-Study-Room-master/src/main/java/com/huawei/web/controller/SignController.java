@@ -1,18 +1,28 @@
 package com.huawei.web.controller;
 
-import com.huawei.web.entity.Log;
-import com.huawei.web.entity.Reserve;
-import com.huawei.web.service.*;
-import com.huawei.web.util.AjaxResult;
-import com.huawei.web.util.constant.Constant;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import jakarta.annotation.Resource;
-import org.springframework.scheduling.annotation.EnableScheduling;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.huawei.web.entity.Log;
+import com.huawei.web.entity.Reserve;
+import com.huawei.web.service.LogService;
+import com.huawei.web.service.ReserveService;
+import com.huawei.web.service.SeatTimeService;
+import com.huawei.web.service.SignService;
+import com.huawei.web.service.UserService;
+import com.huawei.web.util.AjaxResult;
+import com.huawei.web.util.constant.Constant;
+
+import jakarta.annotation.Resource;
 
 /**
  * @author Yi Chuizhou
@@ -66,6 +76,17 @@ public class SignController {
     Timestamp time = Timestamp.valueOf(LocalDateTime.now().minusMinutes(30));
     List<Reserve> reserveList = signService.selectSignInDelay(time);
     for (Reserve reserve : reserveList) {
+      // 再次从数据库中确认预约是否仍然存在且仍处于“正常待签到”状态，
+      // 防止管理员或用户在本次扫描与处理之间手动删除/修改预约导致误记违规。
+      Reserve current = reserveService.selectById(reserve.getReserveId());
+      if (current == null ||
+          current.getReserveState() == null ||
+          !Constant.SIGN_IN_NORMAL.equals(current.getReserveState())) {
+        // 预约已被删除或状态已改变（例如已签到/已取消），跳过违规处理
+        continue;
+      }
+
+      reserve = current;
       // 获取用户信息
       com.huawei.web.entity.User user = userService.selectUserById(reserve.getUserId());
       if (user != null) {
@@ -97,6 +118,15 @@ public class SignController {
     Timestamp time = Timestamp.valueOf(LocalDateTime.now());
     List<Reserve> reserveList = signService.selectSignOutDelay(time);
     for (Reserve reserve : reserveList) {
+      // 同样在处罚前再次确认预约当前状态，避免管理员在此期间手动删除预约
+      Reserve current = reserveService.selectById(reserve.getReserveId());
+      if (current == null ||
+          current.getReserveState() == null ||
+          !Constant.SIGN_IN_NORMAL.equals(current.getReserveState())) {
+        continue;
+      }
+
+      reserve = current;
       // 获取用户信息
       com.huawei.web.entity.User user = userService.selectUserById(reserve.getUserId());
       if (user != null) {

@@ -1,13 +1,16 @@
 package com.huawei.web.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.huawei.web.entity.Reserve;
 import com.huawei.web.entity.Seat;
 import com.huawei.web.mapper.ReserveMapper;
 import com.huawei.web.mapper.SeatMapper;
-import java.util.List;
+
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Yi Chuizhou
@@ -99,6 +102,19 @@ public class ReserveService {
   public void deleteReserve(Reserve reserve) {
     reserveMapper.delete(
         Wrappers.<Reserve>lambdaQuery().eq(Reserve::getReserveId, reserve.getReserveId()));
+  }
+
+  /**
+   * 根据预约 ID 查询预约信息
+   *
+   * @param reserveId 预约ID
+   * @return 预约信息，若不存在则返回 null
+   */
+  public Reserve selectById(Integer reserveId) {
+    if (reserveId == null) {
+      return null;
+    }
+    return reserveMapper.selectById(reserveId);
   }
 
   /**
